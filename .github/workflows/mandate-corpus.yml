@@ -27,7 +27,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: pip install -e ./code/sdk/python
+      # pyproject.toml lives at the repository root; the package under
+      # code/sdk/python is declared via [tool.setuptools.packages.find].
+      - run: pip install -e .
       - name: verify fixtures
         run: python contrib/mandate-corpus/tools/verify_fixtures.py
       - name: negative vectors

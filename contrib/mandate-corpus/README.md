@@ -173,7 +173,7 @@ separate checkout is needed:
 
 ```bash
 python3 -m venv .venv
-.venv/bin/pip install -e ./code/sdk/python   # cryptography, jwcrypto, pydantic, sd-jwt
+.venv/bin/pip install -e .   # pyproject.toml is at the repository root
 
 .venv/bin/python contrib/mandate-corpus/tools/generate_fixtures.py    # → vectors/
 .venv/bin/python contrib/mandate-corpus/tools/verify_fixtures.py      # 3/3 OK
