@@ -1,7 +1,10 @@
+# vendored upstream checkout, not part of this contribution
 AP2/
+# python build artifacts from `pip install -e .`
+*.egg-info/
 .venv/
 __pycache__/
 *.pyc
-# черновики PR не должны попадать в индекс
+# PR drafts are pasted into the GitHub form, never committed
 PR_BODY*.md
 PR_URL*.txt
