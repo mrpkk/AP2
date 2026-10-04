@@ -1,0 +1,39 @@
+# Конформити-корпус мандатов AP2.
+#
+# Векторы обязаны ломаться вслед за SDK: если изменение верификации тихо
+# ломает проверку подписи или cnf-привязки, тест падает в том же PR,
+# а не через месяц у продавца.
+name: mandate-corpus
+
+on:
+  pull_request:
+    paths:
+      - 'code/sdk/python/**'
+      - 'contrib/mandate-corpus/**'
+      - '.github/workflows/mandate-corpus.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'code/sdk/python/**'
+      - 'contrib/mandate-corpus/**'
+  workflow_dispatch:
+
+jobs:
+  vectors:
+    name: signed mandate fixtures
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -e ./code/sdk/python
+      - name: verify fixtures
+        run: python contrib/mandate-corpus/tools/verify_fixtures.py
+      - name: negative vectors
+        run: python contrib/mandate-corpus/tools/negative_vectors.py
+      # Воспроизводитель дефекта expected_aud; падает, пока дефект открыт.
+      # continue-on-error — снимок флага сделает шаг обязательным.
+      - name: poc expected_aud (known defect, non-blocking)
+        continue-on-error: true
+        run: python contrib/mandate-corpus/tools/poc_aud_not_enforced.py
